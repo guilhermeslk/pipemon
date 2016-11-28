@@ -3,11 +3,13 @@ package models
 import "database/sql"
 
 type Pipeline struct {
-	Id int
+	Id    int
+	State string
+	Type  string
 }
 
 func QueryPipelines(db *sql.DB) ([]*Pipeline, error) {
-	rows, err := db.Query("SELECT id from pipelines ORDER BY id")
+	rows, err := db.Query("SELECT id, state, pipeline_type from pipelines ORDER BY id")
 
 	if err != nil {
 		return nil, err
@@ -19,7 +21,7 @@ func QueryPipelines(db *sql.DB) ([]*Pipeline, error) {
 	for rows.Next() {
 		pipeline := new(Pipeline)
 
-		err = rows.Scan(&pipeline.Id)
+		err = rows.Scan(&pipeline.Id, &pipeline.State, &pipeline.Type)
 		if err != nil {
 			return nil, err
 		}

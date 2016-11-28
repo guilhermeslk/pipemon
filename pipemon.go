@@ -35,26 +35,51 @@ func main() {
 	dbJIS = models.InitDB(fmt.Sprintf("user=%s dbname=%s sslmode=disable", DB_USER, JIS_DB_NAME))
 	dbJPS = models.InitDB(fmt.Sprintf("user=%s dbname=%s sslmode=disable", DB_USER, JPS_DB_NAME))
 
-	for range time.Tick(time.Second * RELOAD_INTERVAL) {
-		go printPipelines(dbJerico)
-	}
+	listPipelines(dbJerico)
 }
 
-func printPipelines(db *sql.DB) {
+func listPipelines(db *sql.DB) {
 	pipelines, err := models.QueryPipelines(db)
 	checkErr(err)
 
 	clearScr()
 	fmt.Println(time.Now().Local().String())
 
+	color.Yellow("### PIPEMON ###")
+
 	for _, pipeline := range pipelines {
-		fmt.Printf("PIPELINE: %v", pipeline.Id)
+		printId(pipeline.Id)
+		printSeparator()
+		fmt.Printf(pipeline.Type)
+		printSeparator()
+		printState(pipeline.State)
 		fmt.Printf("\n")
-		printPipelineSteps(pipeline.Id, db, 0)
+	}
+
+	fmt.Print("Pipeline to query: ")
+
+	var input int
+	_, err = fmt.Scanf("%v\n", &input)
+	checkErr(err)
+
+	ticker := time.NewTicker(time.Second * RELOAD_INTERVAL)
+
+	for range ticker.C {
+		go showPipelineDetails(input, dbJerico)
 	}
 }
 
-func printPipelineSteps(pipelineId int, db *sql.DB, paddingLength int) {
+func showPipelineDetails(pipelineId int, db *sql.DB) {
+	clearScr()
+
+	fmt.Println(time.Now().Local().String())
+	fmt.Printf("PIPELINE: %v", pipelineId)
+	fmt.Printf("\n")
+
+	listPipelineSteps(pipelineId, db, 0)
+}
+
+func listPipelineSteps(pipelineId int, db *sql.DB, paddingLength int) {
 	steps, err := models.QueryPipelineSteps(pipelineId, db)
 	checkErr(err)
 
@@ -69,9 +94,9 @@ func printPipelineSteps(pipelineId int, db *sql.DB, paddingLength int) {
 			externalPipelineName := step.AsyncResultData["external_pipeline_name"].(string)
 
 			if externalPipelineName == JIS_PIPELINE_NAME {
-				printPipelineSteps(int(externalPipelineId), dbJIS, 5)
+				listPipelineSteps(int(externalPipelineId), dbJIS, 5)
 			} else if externalPipelineName == JPS_PIPELINE_NAME {
-				printPipelineSteps(int(externalPipelineId), dbJPS, 5)
+				listPipelineSteps(int(externalPipelineId), dbJPS, 5)
 			}
 		}
 	}
