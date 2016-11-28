@@ -7,28 +7,28 @@ type Pipeline struct {
 }
 
 func QueryPipelines(db *sql.DB) ([]*Pipeline, error) {
-  rows, err := db.Query("SELECT id from pipelines ORDER BY id")
+	rows, err := db.Query("SELECT id from pipelines ORDER BY id")
 
-  if err != nil {
-    return nil, err
-  }
-  defer rows.Close()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
 
-  pipelines := make([]*Pipeline, 0)
+	pipelines := make([]*Pipeline, 0)
 
-  for rows.Next() {
-    pipeline := new(Pipeline)
+	for rows.Next() {
+		pipeline := new(Pipeline)
 
-    err = rows.Scan(&pipeline.Id)
-    if err != nil {
-      return nil, err
-    }
+		err = rows.Scan(&pipeline.Id)
+		if err != nil {
+			return nil, err
+		}
 
-    pipelines = append(pipelines, pipeline)
-  }
+		pipelines = append(pipelines, pipeline)
+	}
 
-  if err = rows.Err(); err != nil {
-      return nil, err
-  }
-  return pipelines, nil
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+	return pipelines, nil
 }

@@ -1,38 +1,38 @@
 package main
 
 import (
-	"pipemon/models"
+	"database/sql"
 	"encoding/json"
 	"fmt"
+	"github.com/fatih/color"
 	"os"
 	"os/exec"
+	"pipemon/models"
 	"strings"
 	"time"
-	"database/sql"
-	"github.com/fatih/color"
 )
 
 const (
 	JIS_PIPELINE_NAME = "JIS"
 	JPS_PIPELINE_NAME = "JPS"
 
-	DB_USER = "postgres"
+	DB_USER        = "postgres"
 	JERICO_DB_NAME = "cloudification_development"
-	JIS_DB_NAME = "cloudification_jis_development"
-	JPS_DB_NAME = "cloudification_jps_development"
+	JIS_DB_NAME    = "cloudification_jis_development"
+	JPS_DB_NAME    = "cloudification_jps_development"
 
 	RELOAD_INTERVAL = 5
 )
 
 var (
 	dbJerico *sql.DB
-	dbJIS *sql.DB
- 	dbJPS *sql.DB
+	dbJIS    *sql.DB
+	dbJPS    *sql.DB
 )
 
 func main() {
 	dbJerico = models.InitDB(fmt.Sprintf("user=%s dbname=%s sslmode=disable", DB_USER, JERICO_DB_NAME))
-	dbJIS= models.InitDB(fmt.Sprintf("user=%s dbname=%s sslmode=disable", DB_USER, JIS_DB_NAME))
+	dbJIS = models.InitDB(fmt.Sprintf("user=%s dbname=%s sslmode=disable", DB_USER, JIS_DB_NAME))
 	dbJPS = models.InitDB(fmt.Sprintf("user=%s dbname=%s sslmode=disable", DB_USER, JPS_DB_NAME))
 
 	for range time.Tick(time.Second * RELOAD_INTERVAL) {
@@ -88,7 +88,9 @@ func printPipelineStep(step *models.PipelineStep, paddingLength int) {
 }
 
 func printPadding(length int) {
-	if length <= 0 { return }
+	if length <= 0 {
+		return
+	}
 
 	for i := 0; i < length; i++ {
 		fmt.Printf(" ")
