@@ -91,7 +91,8 @@ func listPipelineSteps(pipelineID int, db *sql.DB, paddingLength int) {
 		json.Unmarshal([]byte(step.AsyncResult), &step.AsyncResultData)
 		checkErr(err)
 
-		if step.AsyncResultData["external_pipeline_id"] != nil {
+		if step.AsyncResultData["external_pipeline_id"] != nil &&
+			step.AsyncResultData["external_pipeline_name"] != nil {
 			externalPipelineID := step.AsyncResultData["external_pipeline_id"].(float64)
 			externalPipelineName := step.AsyncResultData["external_pipeline_name"].(string)
 
