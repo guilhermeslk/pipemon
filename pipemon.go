@@ -13,7 +13,7 @@ import (
 	_ "github.com/lib/pq"
   "github.com/spf13/viper"
 
-  "github.com/ricsdeol/pipemon/models"
+  "github.com/guilhermeslk/pipemon/models"
 )
 
 
