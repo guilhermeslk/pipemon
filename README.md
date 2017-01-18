@@ -64,9 +64,8 @@ Segue um exemplo da estrutura gerado pelo go do GOPATH
 Obs o binaario estara no GOPATH/bin
 
 
-### 
+###
 
 ## TODO
 
-- Gerenciamento de dependência externas
 - Arquivo de configuração no banco

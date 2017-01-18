@@ -11,18 +11,15 @@ import (
 
 	"github.com/fatih/color"
 	_ "github.com/lib/pq"
-	"github.com/pipemon/models"
+  "github.com/spf13/viper"
+
+  "github.com/ricsdeol/pipemon/models"
 )
+
 
 const (
 	jisPipelineName = "JIS"
 	jpsPipelineName = "JPS"
-
-	dbUser       = "postgres"
-	jericoDbName = "cloudification_development"
-	jisDbName    = "cloudification_jis_development"
-	jpsDbName    = "cloudification_jps_development"
-
 	reloadInterval = 5
 )
 
@@ -33,9 +30,24 @@ var (
 )
 
 func main() {
-	dbJerico = models.InitDB(fmt.Sprintf("user=%s dbname=%s sslmode=disable", dbUser, jericoDbName))
-	dbJIS = models.InitDB(fmt.Sprintf("user=%s dbname=%s sslmode=disable", dbUser, jisDbName))
-	dbJPS = models.InitDB(fmt.Sprintf("user=%s dbname=%s sslmode=disable", dbUser, jpsDbName))
+  viper.SetConfigType("yaml")
+  viper.SetConfigName("pipemon_database")
+  viper.AddConfigPath("$GOPATH/bin")
+  err := viper.ReadInConfig() // Find and read the config file
+  if err != nil { // Handle errors reading the config file
+      panic(fmt.Errorf("Fatal error config file: %s \n", err))
+  }
+
+  dbHost       := viper.GetString("host")
+  dbUser       := viper.GetString("user")
+  dbPassword   := viper.GetString("password")
+  jericoDbName := viper.GetString("jerico")
+  jisDbName    := viper.GetString("jis")
+  jpsDbName    := viper.GetString("jps")
+
+	dbJerico = models.InitDB(fmt.Sprintf("host=%s user=%s password=%s dbname=%s",dbHost, dbUser, dbPassword, jericoDbName))
+	dbJIS = models.InitDB(fmt.Sprintf("host=%s user=%s password=%s dbname=%s",dbHost, dbUser, dbPassword, jisDbName))
+	dbJPS = models.InitDB(fmt.Sprintf("host=%s user=%s password=%s dbname=%s",dbHost, dbUser, dbPassword, jpsDbName))
 
 	listPipelines(dbJerico)
 }
