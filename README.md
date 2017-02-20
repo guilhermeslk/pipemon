@@ -64,9 +64,14 @@ Segue um exemplo da estrutura gerado pelo go do GOPATH
 Obs o binaario estara no GOPATH/bin
 
 
-### 
+###
 
 ## TODO
 
-- Gerenciamento de dependência externas
-- Arquivo de configuração no banco
+  - Remover dependencia para pastas models
+  - Aceitar argumentos
+    - nuḿero do pipeline
+    - last (já ir no ultimo pipeline)
+  - Maior interação no pipeline
+    - Voltar
+    - Ler Outpup/AsyncResult

@@ -1,0 +1,7 @@
+host: localhost
+user: postgres
+password: postgres
+
+jerico: cloudification_development
+jis: cloudification_jis_development
+jps: cloudification_jps_development
