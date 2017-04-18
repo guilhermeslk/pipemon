@@ -45,9 +45,9 @@ func main() {
   jisDbName    := viper.GetString("jis")
   jpsDbName    := viper.GetString("jps")
 
-	dbJerico = models.InitDB(fmt.Sprintf("host=%s user=%s password=%s dbname=%s",dbHost, dbUser, dbPassword, jericoDbName))
-	dbJIS = models.InitDB(fmt.Sprintf("host=%s user=%s password=%s dbname=%s",dbHost, dbUser, dbPassword, jisDbName))
-	dbJPS = models.InitDB(fmt.Sprintf("host=%s user=%s password=%s dbname=%s",dbHost, dbUser, dbPassword, jpsDbName))
+	dbJerico = models.InitDB(fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable",dbHost, dbUser, dbPassword, jericoDbName))
+	dbJIS = models.InitDB(fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable",dbHost, dbUser, dbPassword, jisDbName))
+	dbJPS = models.InitDB(fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable",dbHost, dbUser, dbPassword, jpsDbName))
 
 	listPipelines(dbJerico)
 }
