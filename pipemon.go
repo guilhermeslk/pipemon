@@ -29,27 +29,38 @@ var (
 	dbJPS    *sql.DB
 )
 
+
 func main() {
-  viper.SetConfigType("yaml")
+	loadDatabaseConfig()
+	connectToDatabases()
+
+	listPipelines(dbJerico)
+}
+
+func loadDatabaseConfig() {
+	viper.SetConfigType("yaml")
   viper.SetConfigName("pipemon_database")
   viper.AddConfigPath("$GOPATH/bin")
-  err := viper.ReadInConfig() // Find and read the config file
-  if err != nil { // Handle errors reading the config file
-      panic(fmt.Errorf("Fatal error config file: %s \n", err))
-  }
+  viper.AddConfigPath(".")
 
-  dbHost       := viper.GetString("host")
-  dbUser       := viper.GetString("user")
-  dbPassword   := viper.GetString("password")
-  jericoDbName := viper.GetString("jerico")
-  jisDbName    := viper.GetString("jis")
-  jpsDbName    := viper.GetString("jps")
+	err := viper.ReadInConfig()
+
+	if err != nil {
+			panic(fmt.Errorf("Fatal error config file: %s \n", err))
+	}
+}
+
+func connectToDatabases() {
+	dbHost       := viper.GetString("host")
+	dbUser       := viper.GetString("user")
+	dbPassword   := viper.GetString("password")
+	jericoDbName := viper.GetString("jerico")
+	jisDbName    := viper.GetString("jis")
+	jpsDbName    := viper.GetString("jps")
 
 	dbJerico = models.InitDB(fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable",dbHost, dbUser, dbPassword, jericoDbName))
 	dbJIS = models.InitDB(fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable",dbHost, dbUser, dbPassword, jisDbName))
 	dbJPS = models.InitDB(fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable",dbHost, dbUser, dbPassword, jpsDbName))
-
-	listPipelines(dbJerico)
 }
 
 func listPipelines(db *sql.DB) {
