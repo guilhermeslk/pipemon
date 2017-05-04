@@ -5,15 +5,15 @@ Pipeline monitor
 ## Instalação
 
 ### Configuração do GO
-O GO necessita de um GOPATH onde ele usa para instalar as libs os executaveiss e pacotes para distribuição.
+O GO necessita de um GOPATH utilizado para instalar as libs os executáveis e pacotes para distribuição.
 
-Adicinar no seu ENV
+Adicionar no seu ENV
 ```
 export GOPATH=$HOME/src/gocode
 export PATH="$PATH:$GOPATH/bin"
 ```
 
-Segue um exemplo da estrutura gerado pelo go do GOPATH
+Segue um exemplo da estrutura gerada pelo go do GOPATH
 ```
 ├── bin
 ├── pkg
@@ -43,35 +43,35 @@ Segue um exemplo da estrutura gerado pelo go do GOPATH
         └── x
             └── sys
 ```
-é recomendado vc baixar o projeto seguindo esta estrutura exemplo:
+É recomendado que o projeto seja baixado seguindo esta estrutura exemplo:
 `$GOPATH/src/github.com/ricsdeol/pipemon`
 
-### Instalação do GODEP (gerenciador de dependencia do GO)
+### Instalação do GODEP (Gerenciador de dependências do GO)
 
 ```
   go get golang.org/x/sys/unix
   go get github.com/tools/godep
 ```
 
-### Instalar depencias
+### Instalar dependências
 
 `godep restore`
 
-### Gerar binario
+### Gerar binário
 
 `go install`
 
-Obs o binaario estara no GOPATH/bin
+Obs o binário estará no GOPATH/bin
 
 
 ###
 
 ## TODO
 
-  - Remover dependencia para pastas models
+  - Remover dependência da pasta models
   - Aceitar argumentos
     - nuḿero do pipeline
-    - last (já ir no ultimo pipeline)
+    - last (já ir p/ o ultimo pipeline)
   - Maior interação no pipeline
     - Voltar
-    - Ler Outpup/AsyncResult
+    - Ler Output/AsyncResult
